@@ -1,0 +1,21 @@
+#!/usr/bin/make -f
+
+DEB_DIVERT_EXTENSION = .debathena
+DEB_DIVERT_FILES_debathena-pyhesiodfs += \
+	/etc/fuse.conf.debathena
+DEB_PYTHON_SYSTEM=pysupport
+
+ifneq ($(shell grep RESTART_AFTER_UPGRADE /usr/bin/dh_installinit),)
+	DEB_DH_INSTALLINIT_ARGS += --restart-after-upgrade
+endif
+
+clean::
+	if [ -f pyhesiodfs ]; then mv pyhesiodfs pyHesiodFS.py; fi
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+include /usr/share/cdbs/1/rules/config-package.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+common-configure-indep::
+	if [ -f pyHesiodFS.py ]; then mv pyHesiodFS.py pyhesiodfs; fi

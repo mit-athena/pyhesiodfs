@@ -1,0 +1,41 @@
+This package was debianized by Evan Broder <broder@mit.edu> on Thu, 10
+Jul 2008 20:33:40 -0400.
+
+It was downloaded from
+<http://macathena.mit.edu/dist/pyhesiodfs-svn77.tar.gz>
+
+Upstream Author: 
+
+    Quentin Smith <quentin@mit.edu>
+
+Copyright: 
+
+    Copyright (C) 2007 Quentin Smith
+
+License:
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License as
+    published by the Free Software Foundation; either version 2 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301 USA.
+
+pyHesiodFS is released under the GPL, see `/usr/share/common-licenses/GPL'.
+
+pyHesiodFS is based on hello.py, an example Python FUSE filesystem
+available from the python-fuse package at
+`/usr/share/doc/python-fuse/examples/hello.py'. This example is
+released under the LGPL, see `/usr/share/common-licenses/LGPL'.
+
+This Debian package was created as part of the Debian-Athena Project
+<http://web.mit.edu/debathena/www/> of the MIT Student Information
+Processing Board, and is released to the public domain.

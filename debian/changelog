@@ -1,0 +1,19 @@
+debathena-pyhesiodfs (0.0.r150-0debathena1) unstable; urgency=low
+
+  * New upstream version
+  * Use PyHesiod bindings
+  * Remove the initscript for debathena-afuse-automounter on install
+  * Check properly if the package is still installed in the initscript
+  * Fix condition where fuse group might not exist when package is
+    installed
+  * Ensure permissions for /mit are correct in the initscript
+  * Don't fail to stop if the automounter is not currently running
+
+ -- Evan Broder <evan@remus.mit.edu>  Sun, 10 Aug 2008 18:49:30 -0400
+
+debathena-pyhesiodfs (0.0.r77-0debathena1) unstable; urgency=low
+
+  * Initial release
+
+ -- Evan Broder <broder@mit.edu>  Thu, 10 Jul 2008 20:33:40 -0400
+
