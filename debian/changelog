@@ -1,3 +1,12 @@
+debathena-pyhesiodfs (0.0.r150-0debathena3) unstable; urgency=low
+
+  * Fix a typo in the /lib/init/vars.sh part of the previous commit (which
+    was a work in progress and intentionally not committed).
+  * Revert /dev/fuse change, pending further investigation (/dev/fuse is
+    supposewd to be managed by udev).
+
+ -- Anders Kaseorg <andersk@mit.edu>  Tue, 04 Nov 2008 02:56:25 -0500
+
 debathena-pyhesiodfs (0.0.r150-0debathena2) unstable; urgency=low
 
   [ Anders Kaseorg ]

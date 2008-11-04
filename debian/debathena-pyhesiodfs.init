@@ -32,7 +32,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 # Load the VERBOSE setting and other rcS variables
 : ${VERBOSE:=yes}
-if [ -f /lib/lsb/init/vars.sh ]; then
+if [ -f /lib/init/vars.sh ]; then
     . /lib/init/vars.sh
 elif [ -f /etc/default/rcS ]; then
     . /etc/default/rcS
@@ -54,8 +54,6 @@ do_start()
     
     # Try to make sure fuse is setup
     [ -e /dev/fuse ] || modprobe fuse || return 2
-    chown root:fuse /dev/fuse || return 2
-    chmod g+rw /dev/fuse || return 2
     
     if cat /proc/mounts | grep " $pyhesiodfs_dir " >/dev/null 2>&1; then
 	return 1
