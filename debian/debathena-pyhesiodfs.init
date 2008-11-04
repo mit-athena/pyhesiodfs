@@ -31,7 +31,12 @@ SCRIPTNAME=/etc/init.d/$NAME
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
-. /lib/init/vars.sh
+: ${VERBOSE:=yes}
+if [ -f /lib/lsb/init/vars.sh ]; then
+    . /lib/init/vars.sh
+elif [ -f /etc/default/rcS ]; then
+    . /etc/default/rcS
+fi
 
 # Define LSB log_* functions.
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
@@ -49,6 +54,8 @@ do_start()
     
     # Try to make sure fuse is setup
     [ -e /dev/fuse ] || modprobe fuse || return 2
+    chown root:fuse /dev/fuse || return 2
+    chmod g+rw /dev/fuse || return 2
     
     if cat /proc/mounts | grep " $pyhesiodfs_dir " >/dev/null 2>&1; then
 	return 1

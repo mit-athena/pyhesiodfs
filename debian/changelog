@@ -1,3 +1,14 @@
+debathena-pyhesiodfs (0.0.r150-0debathena2) unstable; urgency=low
+
+  [ Anders Kaseorg ]
+  * Don't require /lib/init/vars.sh in the initscript, so it works on
+    dapper.
+
+  [ Evan Broder ]
+  * Fixup the permission bits on /dev/fuse if they're wrong
+
+ -- Evan Broder <broder@mit.edu>  Mon, 03 Nov 2008 22:25:23 -0500
+
 debathena-pyhesiodfs (0.0.r150-0debathena1) unstable; urgency=low
 
   * New upstream version
