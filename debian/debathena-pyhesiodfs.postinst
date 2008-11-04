@@ -28,8 +28,12 @@ case "$1" in
         adduser pyhesiodfs fuse
         
 	if hash invoke-rc.d 2>/dev/null; then
+	    # If /dev/fuse has group root, restart udev to work around
+	    # <https://bugs.launchpad.net/ubuntu/+source/fuse/+bug/293502>
+	    [ "$(stat -c %g /dev/fuse)" != 0 ] || invoke-rc.d udev restart || :
 	    invoke-rc.d debathena-pyhesiodfs restart
 	else
+	    [ "$(stat -c %g /dev/fuse)" != 0 ] || /etc/init.d/udev restart || :
 	    /etc/init.d/debathena-pyhesiodfs restart
 	fi
         update-rc.d -f debathena-afuse-automounter remove >/dev/null || :
