@@ -10,6 +10,7 @@
 #
 
 import sys, os, stat, errno
+from syslog import *
 import fuse
 from fuse import Fuse
 
@@ -51,6 +52,9 @@ class PyHesiodFS(Fuse):
 
     def __init__(self, *args, **kwargs):
         Fuse.__init__(self, *args, **kwargs)
+        
+        openlog('pyhesiodfs', 0, LOG_DAEMON)
+        
         try:
             self.fuse_args.add("allow_other", True)
         except AttributeError:
@@ -106,14 +110,14 @@ class PyHesiodFS(Fuse):
                 pointers = filsys.filsys
                 pointer = pointers[0]
                 if pointer['type'] != 'AFS' and pointer['type'] != 'LOC':
-                    print >>sys.stderr, "Unknown locker type "+pointer.type+" for locker "+name+" ("+repr(pointer)+" )"
+                    syslog(LOG_NOTICE, "Unknown locker type "+pointer['type']+" for locker "+name+" ("+repr(pointer)+" )")
                     return None
                 else:
                     self.mounts[name] = pointer['location']
-                    print >>sys.stderr, "Mounting "+name+" on "+pointer['location']
+                    syslog(LOG_INFO, "Mounting "+name+" on "+pointer['location'])
                     return pointer['location']
             else:
-                print >>sys.stderr, "Couldn't find filsys for "+name
+                syslog(LOG_WARNING, "Couldn't find filsys for "+name)
                 return None
 
     def getdir(self, path):

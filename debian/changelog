@@ -1,3 +1,9 @@
+debathena-pyhesiodfs (0.0.r157-0debathena1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Evan Broder <broder@mit.edu>  Tue, 11 Nov 2008 14:19:15 -0500
+
 debathena-pyhesiodfs (0.0.r150-0debathena4) unstable; urgency=low
 
   * If /dev/fuse has group root, restart udev to work around LP #293502.
