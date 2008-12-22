@@ -9,12 +9,61 @@
 #    See the file COPYING.
 #
 
-import sys, os, stat, errno
+import sys, os, stat, errno, time
 from syslog import *
 import fuse
 from fuse import Fuse
 
 import hesiod
+
+try:
+    from collections import defaultdict
+except ImportError:
+    class defaultdict(dict):
+        """
+        A dictionary that automatically will fill in keys that don't exist
+        with the result from some default value factory
+        
+        Based on the collections.defaultdict object in Python 2.5
+        """
+        
+        def __init__(self, default_factory):
+            self.default_factory = default_factory
+            super(defaultdict, self).__init__()
+        
+        def __getitem__(self, y):
+            if y not in self:
+                self[y] = self.default_factory()
+            return super(defaultdict, self).__getitem__(y)
+        
+        def __str__(self):
+            print 'defaultdict(%s, %s)' % (self.default_factory, 
+                                           super(defaultdict, self).__str__())
+
+class negcache(dict):
+    """
+    A set-like object that automatically expunges entries after
+    they're been there for a certain amount of time.
+    
+    This only supports add, remove, and __contains__
+    """
+    
+    def __init__(self, cache_time):
+        self.cache_time = cache_time
+    
+    def add(self, obj):
+        self[obj] = time.time()
+    
+    def remove(self, obj):
+        del self[obj]
+    
+    def __contains__(self, k):
+        if super(negcache, self).__contains__(k):
+            if self[k] + self.cache_time > time.time():
+                return True
+            else:
+                del self[k]
+        return False
 
 new_fuse = hasattr(fuse, '__version__')
 
@@ -65,20 +114,28 @@ class PyHesiodFS(Fuse):
             self.fuse_args.add("noapplexattr", True)
             self.fuse_args.add("volname", "MIT")
             self.fuse_args.add("fsname", "pyHesiodFS")
-        self.mounts = {}
+        self.mounts = defaultdict(dict)
+        
+        # Cache deletions for 10 seconds - should give people time to
+        # make a new symlink
+        self.negcache = negcache(10)
+    
+    def _user(self):
+        return fuse.FuseGetContext()['uid']
     
     def getattr(self, path):
         st = MyStat()
         if path == '/':
-            st.st_mode = stat.S_IFDIR | 0755
+            st.st_mode = stat.S_IFDIR | 0777
             st.st_nlink = 2
         elif path == hello_path:
             st.st_mode = stat.S_IFREG | 0444
             st.st_nlink = 1
             st.st_size = len(hello_str)
         elif '/' not in path[1:]:
-            if self.findLocker(path[1:]):
+            if path[1:] not in self.negcache and self.findLocker(path[1:]):
                 st.st_mode = stat.S_IFLNK | 0777
+                st.st_uid = self._user()
                 st.st_nlink = 1
                 st.st_size = len(self.findLocker(path[1:]))
             else:
@@ -91,12 +148,12 @@ class PyHesiodFS(Fuse):
             return st.toTuple()
 
     def getCachedLockers(self):
-        return self.mounts.keys()
+        return self.mounts[self._user()].keys()
 
     def findLocker(self, name):
         """Lookup a locker in hesiod and return its path"""
-        if name in self.mounts:
-            return self.mounts[name]
+        if name in self.mounts[self._user()]:
+            return self.mounts[self._user()][name]
         else:
             try:
                 filsys = hesiod.FilsysLookup(name)
@@ -113,7 +170,7 @@ class PyHesiodFS(Fuse):
                     syslog(LOG_NOTICE, "Unknown locker type "+pointer['type']+" for locker "+name+" ("+repr(pointer)+" )")
                     return None
                 else:
-                    self.mounts[name] = pointer['location']
+                    self.mounts[self._user()][name] = pointer['location']
                     syslog(LOG_INFO, "Mounting "+name+" on "+pointer['location'])
                     return pointer['location']
             else:
@@ -148,6 +205,25 @@ class PyHesiodFS(Fuse):
         else:
             buf = ''
         return buf
+    
+    def symlink(self, src, path):
+        if path == '/' or path == hello_path:
+            return -errno.EPERM
+        elif '/' not in path[1:]:
+            self.mounts[self._user()][path[1:]] = src
+            self.negcache.remove(path[1:])
+            print self.mounts[self._user()]
+        else:
+            return -errno.EPERM
+    
+    def unlink(self, path):
+        if path == '/' or path == hello_path:
+            return -errno.EPERM
+        elif '/' not in path[1:]:
+            del self.mounts[self._user()][path[1:]]
+            self.negcache.add(path[1:])
+        else:
+            return -errno.EPERM
 
 def main():
     global hello_str

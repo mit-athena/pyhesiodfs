@@ -1,8 +1,9 @@
-Index: debathena-pyhesiodfs/setup.py
+Index: debathena-pyhesiodfs-0.0.r162/setup.py
 ===================================================================
---- debathena-pyhesiodfs.orig/setup.py
-+++ debathena-pyhesiodfs/setup.py	
-@@ -11,5 +11,5 @@
+--- debathena-pyhesiodfs-0.0.r162.orig/setup.py	2008-12-22 13:53:01.000000000 -0500
++++ debathena-pyhesiodfs-0.0.r162/setup.py	2008-12-22 14:18:33.000000000 -0500
+@@ -10,6 +10,6 @@
+       version='1.0',
        author='Quentin Smith',
        author_email='pyhesiodfs@mit.edu',
 -      scripts=['pyHesiodFS.py'],

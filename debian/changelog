@@ -1,3 +1,9 @@
+debathena-pyhesiodfs (0.0.r162-0debathena1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Evan Broder <broder@mit.edu>  Mon, 22 Dec 2008 14:03:14 -0500
+
 debathena-pyhesiodfs (0.0.r157-0debathena2) unstable; urgency=low
 
   * Rebuild with new version of python-hesiod

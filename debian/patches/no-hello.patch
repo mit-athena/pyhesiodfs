@@ -1,9 +1,9 @@
 
-Index: debathena-pyhesiodfs-0.0.r157/pyHesiodFS.py
+Index: debathena-pyhesiodfs-0.0.r162/pyHesiodFS.py
 ===================================================================
---- debathena-pyhesiodfs-0.0.r157.orig/pyHesiodFS.py	2008-11-11 14:20:55.000000000 -0500
-+++ debathena-pyhesiodfs-0.0.r157/pyHesiodFS.py	2008-11-11 14:21:15.000000000 -0500
-@@ -20,13 +20,6 @@
+--- debathena-pyhesiodfs-0.0.r162.orig/pyHesiodFS.py	2008-12-22 13:53:01.000000000 -0500
++++ debathena-pyhesiodfs-0.0.r162/pyHesiodFS.py	2008-12-22 14:20:36.000000000 -0500
+@@ -69,13 +69,6 @@
  
  fuse.fuse_python_api = (0, 2)
  
@@ -17,18 +17,18 @@ Index: debathena-pyhesiodfs-0.0.r157/pyHesiodFS.py
  if not hasattr(fuse, 'Stat'):
      fuse.Stat = object
  
-@@ -72,10 +65,6 @@
+@@ -128,10 +121,6 @@
          if path == '/':
-             st.st_mode = stat.S_IFDIR | 0755
+             st.st_mode = stat.S_IFDIR | 0777
              st.st_nlink = 2
 -        elif path == hello_path:
 -            st.st_mode = stat.S_IFREG | 0444
 -            st.st_nlink = 1
 -            st.st_size = len(hello_str)
          elif '/' not in path[1:]:
-             if self.findLocker(path[1:]):
+             if path[1:] not in self.negcache and self.findLocker(path[1:]):
                  st.st_mode = stat.S_IFLNK | 0777
-@@ -121,7 +110,7 @@
+@@ -178,7 +167,7 @@
                  return None
  
      def getdir(self, path):
@@ -37,7 +37,7 @@ Index: debathena-pyhesiodfs-0.0.r157/pyHesiodFS.py
  
      def readdir(self, path, offset):
          for (r, zero) in self.getdir(path):
-@@ -130,27 +119,7 @@
+@@ -187,27 +176,8 @@
      def readlink(self, path):
          return self.findLocker(path[1:])
  
@@ -59,13 +59,31 @@ Index: debathena-pyhesiodfs-0.0.r157/pyHesiodFS.py
 -        else:
 -            buf = ''
 -        return buf
--
+-    
+     def symlink(self, src, path):
+-        if path == '/' or path == hello_path:
++        if path == '/':
+             return -errno.EPERM
+         elif '/' not in path[1:]:
+             self.mounts[self._user()][path[1:]] = src
+@@ -217,7 +187,7 @@
+             return -errno.EPERM
+     
+     def unlink(self, path):
+-        if path == '/' or path == hello_path:
++        if path == '/':
+             return -errno.EPERM
+         elif '/' not in path[1:]:
+             del self.mounts[self._user()][path[1:]]
+@@ -226,7 +196,6 @@
+             return -errno.EPERM
+ 
  def main():
 -    global hello_str
      try:
          usage = Fuse.fusage
          server = PyHesiodFS(version="%prog " + fuse.__version__,
-@@ -166,7 +135,6 @@
+@@ -242,7 +211,6 @@
              sys.argv.pop(1)
          server = PyHesiodFS()
  
