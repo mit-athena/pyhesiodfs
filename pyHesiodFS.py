@@ -37,8 +37,8 @@ except ImportError:
             return super(defaultdict, self).__getitem__(y)
         
         def __str__(self):
-            print 'defaultdict(%s, %s)' % (self.default_factory, 
-                                           super(defaultdict, self).__str__())
+            return 'defaultdict(%s, %s)' % (self.default_factory, 
+                                            super(defaultdict, self).__str__())
 
 class negcache(dict):
     """
@@ -48,14 +48,17 @@ class negcache(dict):
     This only supports add, remove, and __contains__
     """
     
-    def __init__(self, cache_time):
+    def __init__(self, cache_time=0.5):
         self.cache_time = cache_time
     
     def add(self, obj):
         self[obj] = time.time()
     
     def remove(self, obj):
-        del self[obj]
+        try:
+            del self[obj]
+        except KeyError:
+            pass
     
     def __contains__(self, k):
         if super(negcache, self).__contains__(k):
@@ -116,26 +119,33 @@ class PyHesiodFS(Fuse):
             self.fuse_args.add("fsname", "pyHesiodFS")
         self.mounts = defaultdict(dict)
         
-        # Cache deletions for 10 seconds - should give people time to
-        # make a new symlink
-        self.negcache = negcache(10)
+        # Cache deletions for half a second - should give `ln -nsf`
+        # enough time to make a new symlink
+        self.negcache = defaultdict(negcache)
     
-    def _user(self):
+    def _uid(self):
         return fuse.FuseGetContext()['uid']
+    
+    def _gid(self):
+        return fuse.FuseGetContext()['gid']
+    
+    def _pid(self):
+        return fuse.FuseGetContext()['pid']
     
     def getattr(self, path):
         st = MyStat()
         if path == '/':
-            st.st_mode = stat.S_IFDIR | 0777
+            st.st_mode = stat.S_IFDIR | 0755
+            st.st_gid = self._gid()
             st.st_nlink = 2
         elif path == hello_path:
             st.st_mode = stat.S_IFREG | 0444
             st.st_nlink = 1
             st.st_size = len(hello_str)
         elif '/' not in path[1:]:
-            if path[1:] not in self.negcache and self.findLocker(path[1:]):
+            if path[1:] not in self.negcache[self._uid()] and self.findLocker(path[1:]):
                 st.st_mode = stat.S_IFLNK | 0777
-                st.st_uid = self._user()
+                st.st_uid = self._uid()
                 st.st_nlink = 1
                 st.st_size = len(self.findLocker(path[1:]))
             else:
@@ -148,12 +158,12 @@ class PyHesiodFS(Fuse):
             return st.toTuple()
 
     def getCachedLockers(self):
-        return self.mounts[self._user()].keys()
+        return self.mounts[self._uid()].keys()
 
     def findLocker(self, name):
         """Lookup a locker in hesiod and return its path"""
-        if name in self.mounts[self._user()]:
-            return self.mounts[self._user()][name]
+        if name in self.mounts[self._uid()]:
+            return self.mounts[self._uid()][name]
         else:
             try:
                 filsys = hesiod.FilsysLookup(name)
@@ -170,7 +180,7 @@ class PyHesiodFS(Fuse):
                     syslog(LOG_NOTICE, "Unknown locker type "+pointer['type']+" for locker "+name+" ("+repr(pointer)+" )")
                     return None
                 else:
-                    self.mounts[self._user()][name] = pointer['location']
+                    self.mounts[self._uid()][name] = pointer['location']
                     syslog(LOG_INFO, "Mounting "+name+" on "+pointer['location'])
                     return pointer['location']
             else:
@@ -210,9 +220,8 @@ class PyHesiodFS(Fuse):
         if path == '/' or path == hello_path:
             return -errno.EPERM
         elif '/' not in path[1:]:
-            self.mounts[self._user()][path[1:]] = src
-            self.negcache.remove(path[1:])
-            print self.mounts[self._user()]
+            self.mounts[self._uid()][path[1:]] = src
+            self.negcache[self._uid()].remove(path[1:])
         else:
             return -errno.EPERM
     
@@ -220,8 +229,8 @@ class PyHesiodFS(Fuse):
         if path == '/' or path == hello_path:
             return -errno.EPERM
         elif '/' not in path[1:]:
-            del self.mounts[self._user()][path[1:]]
-            self.negcache.add(path[1:])
+            del self.mounts[self._uid()][path[1:]]
+            self.negcache[self._uid()].add(path[1:])
         else:
             return -errno.EPERM
 
