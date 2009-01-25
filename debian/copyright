@@ -36,6 +36,6 @@ available from the python-fuse package at
 `/usr/share/doc/python-fuse/examples/hello.py'. This example is
 released under the LGPL, see `/usr/share/common-licenses/LGPL'.
 
-This Debian package was created as part of the Debian-Athena Project
-<http://web.mit.edu/debathena/www/> of the MIT Student Information
-Processing Board, and is released to the public domain.
+This Debian package was created as part of the Debathena Project
+<http://debathena.mit.edu> of the MIT Student Information Processing
+Board, and is released to the public domain.
