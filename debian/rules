@@ -9,6 +9,8 @@ ifneq ($(shell grep RESTART_AFTER_UPGRADE /usr/bin/dh_installinit),)
 	DEB_DH_INSTALLINIT_ARGS += --restart-after-upgrade
 endif
 
+DEB_UPDATE_RCD_PARAMS_debathena-pyhesiodfs += defaults 15 85
+
 clean::
 	if [ -f pyhesiodfs ]; then mv pyhesiodfs pyHesiodFS.py; fi
 
