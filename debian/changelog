@@ -1,3 +1,10 @@
+debathena-pyhesiodfs (0.0.r167-0debathena4) unstable; urgency=low
+
+  * Start PyHesiodFS with -o nonempty, in case there is anything in
+    /mit. (Trac: #461)
+
+ -- Evan Broder <broder@mit.edu>  Thu, 10 Dec 2009 14:25:53 -0500
+
 debathena-pyhesiodfs (0.0.r167-0debathena3) unstable; urgency=low
 
   * Start pyhesiodfs before ssh so that users don't end up without their

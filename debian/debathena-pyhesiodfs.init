@@ -20,7 +20,7 @@ DESC="Debathena /mit automounter"
 NAME=debathena-pyhesiodfs
 DAEMON=/usr/bin/pyhesiodfs
 pyhesiodfs_dir="/mit"
-DAEMON_ARGS="-f $pyhesiodfs_dir"
+DAEMON_ARGS="-f $pyhesiodfs_dir -o nonempty"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
