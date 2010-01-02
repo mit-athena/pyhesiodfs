@@ -1,9 +1,3 @@
-debathena-pyhesiodfs (0.0.r167-0debathena5) unstable; urgency=low
-
-  * Use Python-Depends for dependencies on other Python modules.
-
- -- Evan Broder <broder@mit.edu>  Fri, 01 Jan 2010 21:12:15 -0500
-
 debathena-pyhesiodfs (0.0.r167-0debathena4) unstable; urgency=low
 
   * Start PyHesiodFS with -o nonempty, in case there is anything in
