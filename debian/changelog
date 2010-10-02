@@ -1,4 +1,4 @@
-debathena-pyhesiodfs (0.0.r167-0debathena5) UNRELEASED; urgency=low
+debathena-pyhesiodfs (0.0.r167-0debathena5) unstable; urgency=low
 
   * Fix package name in maintainer scripts
 
