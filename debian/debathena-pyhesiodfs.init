@@ -23,12 +23,20 @@ pyhesiodfs_dir="/mit"
 DAEMON_ARGS="-f $pyhesiodfs_dir -o nonempty"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
+oom_adj=-17
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+
+# Are we in a virtual environment that doesn't support modifying
+# /proc/self/oom_adj?
+if grep -q 'envID:.*[1-9]' /proc/self/status; then
+    unset oom_adj
+fi
 
 # Load the VERBOSE setting and other rcS variables
 : ${VERBOSE:=yes}
@@ -69,6 +77,10 @@ do_start()
 	--exec $DAEMON -- \
         $DAEMON_ARGS \
         || return 2
+
+    if [ -n "$oom_adj" ] && [ -w /proc/"$(cat "$PIDFILE")"/oom_adj ]; then
+        echo "$oom_adj" > /proc/"$(cat "$PIDFILE")"/oom_adj
+    fi
 }
 
 #

@@ -1,3 +1,10 @@
+debathena-pyhesiodfs (0.0.r167-0debathena6) unstable; urgency=low
+
+  * Set /proc/$pid/oom_adj to -17 (never OOM kill this process).
+    Code loosely adapted from ssh's initscript.
+
+ -- Geoffrey Thomas <geofft@mit.edu>  Sun, 13 Feb 2011 22:06:57 -0500
+
 debathena-pyhesiodfs (0.0.r167-0debathena5) unstable; urgency=low
 
   * Fix package name in maintainer scripts
