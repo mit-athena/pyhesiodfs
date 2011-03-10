@@ -1,0 +1,44 @@
+.TH pyhesiodfs 1 "March 2011" Debathena debathena-pyhesiodfs
+.SH NAME
+pyhesiodfs \- PythonFUSE-based automounter for /mit
+.SH SYNOPSIS
+.B pyhesiodfs [
+.I options
+.B ]
+.SH DESCRIPTION
+.B pyhesiodfs
+uses the Python FUSE API to create a FUSE ("Filesystem in Userspace")
+filesystem mounted on /mit, which automatically looks up locker names
+in Hesiod and creates the necessary symlinks to the path in AFS.  It
+is the user's responsibility to obtain the necessary AFS tokens, though this is usually done at login time by PAM.  
+
+Really, you should never need to run this command by hand, and the
+only reason this man page exists is because Debian Policy requires it.
+.SH OPTIONS
+Most options are passed directly to the Python FUSE option parser.
+Consult that documentation for the appropriate options.  
+
+On Debathena, it is typically invoked as:
+.B pyhesiodfs -f /mit -o nonempty
+
+.SH FILES
+.I /etc/fuse.conf
+.RS
+Actually provided by fuse-utils, but diverted by the debathena-pyhesiodfs package.
+.SH BUGS
+Probably.
+.SH AUTHOR
+.B pyhesiodfs
+was written by Quentin Smith and heavily customized by the Debathena
+Project, a joint effort of SIPB and MIT IS&T.  The manual page was
+written by Jonathan Reed.
+.SH "SEE ALSO"
+The python-fuse documentation, available via the 
+.I pydoc
+command, and its FAQ, typically installed at
+.I /usr/share/doc/python-fuse/FAQ
+
+.BR hesiod (3),
+.BR lockers (7),
+.BR undocumented (7)
+
