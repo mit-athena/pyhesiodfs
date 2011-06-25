@@ -1,1 +1,2 @@
 debian/fuse.conf.debathena etc/
+pyhesiodfs.1 usr/share/man/man1

@@ -1,3 +1,9 @@
+debathena-pyhesiodfs (0.0.r167-0debathena8) unstable; urgency=low
+
+  * Actually install the man page
+
+ -- Jonathan Reed <jdreed@mit.edu>  Sat, 25 Jun 2011 10:50:29 -0400
+
 debathena-pyhesiodfs (0.0.r167-0debathena7) unstable; urgency=low
 
   * Add a man page (Trac: #271)
