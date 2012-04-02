@@ -1,3 +1,9 @@
+debathena-pyhesiodfs (0.0.r167-0debathena10) unstable; urgency=low
+
+  * Don't send syslog messages on ERR locker types.
+
+ -- Geoffrey Thomas <geofft@mit.edu>  Mon, 02 Apr 2012 13:51:57 -0700
+
 debathena-pyhesiodfs (0.0.r167-0debathena9) unstable; urgency=low
 
   * No change rebuild to pick up config-package-dev 4.13 changes
