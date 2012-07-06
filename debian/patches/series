@@ -1,3 +1,2 @@
 install-script-without-extension.patch
 no-hello.patch
-no-syslog-on-ERR.patch
