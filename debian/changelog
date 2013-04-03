@@ -1,3 +1,9 @@
+debathena-pyhesiodfs (0.0.r167-0debathena10) unstable; urgency=low
+
+  * Catch tracebacks when starting (Trac: #482)
+
+ -- Jonathan Reed <jdreed@mit.edu>  Wed, 03 Apr 2013 12:48:19 -0400
+
 debathena-pyhesiodfs (0.0.r167-0debathena9) unstable; urgency=low
 
   * No change rebuild to pick up config-package-dev 4.13 changes
