@@ -1,0 +1,31 @@
+commit c4f208b4887f7d336561c10ce4ad7ca6f68dc515
+Author: Alex Dehnert <adehnert@mit.edu>
+Date:   Tue Jun 18 17:52:23 2013 -0400
+
+    Print ERR lockers
+
+diff --git a/debathena/debathena/pyhesiodfs/pyHesiodFS.py b/debathena/debathena/pyhesiodfs/pyHesiodFS.py
+index e48ebb1..2e21dba 100644
+--- a/pyHesiodFS.py
++++ b/pyHesiodFS.py
+@@ -165,13 +165,16 @@ class PyHesiodFS(Fuse):
+             if len(filsys.filsys) >= 1:
+                 pointers = filsys.filsys
+                 pointer = pointers[0]
+-                if pointer['type'] != 'AFS' and pointer['type'] != 'LOC':
+-                    syslog(LOG_NOTICE, "Unknown locker type "+pointer['type']+" for locker "+name+" ("+repr(pointer)+" )")
+-                    return None
+-                else:
++                if pointer['type'] == 'AFS' or pointer['type'] == 'LOC':
+                     self.mounts[self._uid()][name] = pointer['location']
+                     syslog(LOG_INFO, "Mounting "+name+" on "+pointer['location'])
+                     return pointer['location']
++                elif pointer['type'] == 'ERR':
++                    syslog(LOG_NOTICE, "ERR for locker %s: %s" % (name, pointer['message'], ))
++                    return None
++                else:
++                    syslog(LOG_NOTICE, "Unknown locker type "+pointer['type']+" for locker "+name+" ("+repr(pointer)+" )")
++                    return None
+             else:
+                 syslog(LOG_WARNING, "Couldn't find filsys for "+name)
+                 return None
