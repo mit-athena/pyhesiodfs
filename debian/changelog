@@ -1,3 +1,10 @@
+debathena-pyhesiodfs (0.0.r167-0debathena12) unstable; urgency=low
+
+  * Depend on fuse 2.8.5-2 in preference to fuse-utils, which no longer
+    exists in saucy and above (Trac: #1411)
+
+ -- Jonathan Reed <jdreed@mit.edu>  Mon, 21 Oct 2013 09:54:00 -0400
+
 debathena-pyhesiodfs (0.0.r167-0debathena11) unstable; urgency=low
 
   * Understand and appropriately display ERR lockers (Trac: #1329)

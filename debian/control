@@ -3,11 +3,11 @@ Section: debathena/net
 Priority: extra
 Maintainer: Debathena Project <debathena@mit.edu>
 Build-Depends: cdbs, debhelper, quilt, patchutils, config-package-dev, python-dev, python-support
-Standards-Version: 3.7.3
+Standards-Version: 3.9.3
 
 Package: debathena-pyhesiodfs
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-fuse, python-hesiod (>= 0.2.10), debathena-afs-config, debathena-hesiod-config, adduser, fuse-utils, lsb-base (>= 3.0-6)
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-fuse, python-hesiod (>= 0.2.10), debathena-afs-config, debathena-hesiod-config, adduser, fuse (>= 2.8.5-2~) | fuse-utils, lsb-base (>= 3.0-6)
 Provides: ${python:Provides}
 Conflicts: debathena-afuse-automounter, debathena-autofs-config
 Replaces: debathena-afuse-automounter, debathena-autofs-config
