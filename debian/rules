@@ -11,12 +11,6 @@ endif
 
 DEB_UPDATE_RCD_PARAMS_debathena-pyhesiodfs += defaults 15 85
 
-clean::
-	if [ -f pyhesiodfs ]; then mv pyhesiodfs pyHesiodFS.py; fi
-
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/config-package.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
-
-common-configure-indep::
-	if [ -f pyHesiodFS.py ]; then mv pyHesiodFS.py pyhesiodfs; fi
