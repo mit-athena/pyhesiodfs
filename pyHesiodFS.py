@@ -1,4 +1,4 @@
-#!/usr/bin/python2.5
+#!/usr/bin/python2
 
 #    pyHesiodFS:
 #    Copyright (C) 2007  Quentin Smith <quentin@mit.edu>
@@ -9,36 +9,17 @@
 #    See the file COPYING.
 #
 
-import sys, os, stat, errno, time
+import sys
+if sys.hexversion < 0x020600f0:
+    sys.exit("Python 2.6 or higher is required.")
+
+import os, stat, errno, time
 from syslog import *
 import fuse
 from fuse import Fuse
+from collections import defaultdict
 
 import hesiod
-
-try:
-    from collections import defaultdict
-except ImportError:
-    class defaultdict(dict):
-        """
-        A dictionary that automatically will fill in keys that don't exist
-        with the result from some default value factory
-        
-        Based on the collections.defaultdict object in Python 2.5
-        """
-        
-        def __init__(self, default_factory):
-            self.default_factory = default_factory
-            super(defaultdict, self).__init__()
-        
-        def __getitem__(self, y):
-            if y not in self:
-                self[y] = self.default_factory()
-            return super(defaultdict, self).__getitem__(y)
-        
-        def __str__(self):
-            return 'defaultdict(%s, %s)' % (self.default_factory, 
-                                            super(defaultdict, self).__str__())
 
 class negcache(dict):
     """
