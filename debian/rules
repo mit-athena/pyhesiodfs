@@ -15,7 +15,6 @@ clean::
 	if [ -f pyhesiodfs ]; then mv pyhesiodfs pyHesiodFS.py; fi
 
 include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/config-package.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
 

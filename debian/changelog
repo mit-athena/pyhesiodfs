@@ -1,3 +1,11 @@
+debathena-pyhesiodfs (1.0.1-0debathena1) unstable; urgency=low
+
+  * Re-factor all our existing patches into the mainline code, as we are
+    now becoming upstream
+  * setup.py retains the old script name (pyHesiodFS.py) on Mac OS X
+
+ -- Jonathan Reed <jdreed@mit.edu>  Thu, 24 Oct 2013 14:44:29 -0400
+
 debathena-pyhesiodfs (0.0.r167-0debathena12) unstable; urgency=low
 
   * Depend on fuse 2.8.5-2 in preference to fuse-utils, which no longer

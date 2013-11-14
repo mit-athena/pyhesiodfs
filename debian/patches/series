@@ -1,4 +1,0 @@
-install-script-without-extension.patch
-no-hello.patch
-catch-traceback-when-starting.patch
-print-err-lockers.patch
