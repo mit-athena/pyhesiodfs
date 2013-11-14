@@ -30,7 +30,7 @@ class CleanCommand(clean):
             os.unlink(copy_file[1])
 
 setup(name='pyHesiodFS',
-      version='1.0.1',
+      version='1.1',
       author='Quentin Smith',
       author_email='pyhesiodfs@mit.edu',
       maintainer='Debathena Project',

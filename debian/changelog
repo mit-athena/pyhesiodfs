@@ -1,3 +1,17 @@
+debathena-pyhesiodfs (1.1-0debathena1) unstable; urgency=low
+
+  * New upstream release (Trac: #766)
+  * pyhesiodfs now supports a config file
+  * The ability to display a "README.txt" file in the top level (used on
+    Mac OS X) has been restored, but is disabled by default in the config
+    file
+  * pyhesiodfs no longer logs every symlink creation (Trac: #355)
+  * pyhesiodfs presents an "attachtab" for use with new user-space utilities
+  * Logic for changing the script name on different platforms has been
+    moved to setup.py
+
+ -- Jonathan Reed <jdreed@mit.edu>  Thu, 14 Nov 2013 16:55:54 -0500
+
 debathena-pyhesiodfs (1.0.1-0debathena1) unstable; urgency=low
 
   * Re-factor all our existing patches into the mainline code, as we are
