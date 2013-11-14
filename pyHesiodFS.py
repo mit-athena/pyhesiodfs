@@ -49,12 +49,8 @@ class negcache(dict):
                 del self[k]
         return False
 
-new_fuse = hasattr(fuse, '__version__')
-
+# Use the "new" API
 fuse.fuse_python_api = (0, 2)
-
-if not hasattr(fuse, 'Stat'):
-    fuse.Stat = object
 
 class MyStat(fuse.Stat):
     def __init__(self):
@@ -68,11 +64,6 @@ class MyStat(fuse.Stat):
         self.st_atime = 0
         self.st_mtime = 0
         self.st_ctime = 0
-
-    def toTuple(self):
-        return (self.st_mode, self.st_ino, self.st_dev, self.st_nlink,
-                self.st_uid, self.st_gid, self.st_size, self.st_atime,
-                self.st_mtime, self.st_ctime)
 
 class PyHesiodFS(Fuse):
 
@@ -122,10 +113,7 @@ class PyHesiodFS(Fuse):
                 return -errno.ENOENT
         else:
             return -errno.ENOENT
-        if new_fuse:
-            return st
-        else:
-            return st.toTuple()
+        return st
 
     def getCachedLockers(self):
         return self.mounts[self._uid()].keys()
@@ -189,20 +177,11 @@ class PyHesiodFS(Fuse):
             return -errno.EPERM
 
 def main():
-    try:
-        usage = Fuse.fusage
-        server = PyHesiodFS(version="%prog " + fuse.__version__,
-                            usage=usage,
-                            dash_s_do='setsingle')
-        server.parse(errex=1)
-    except AttributeError:
-        usage="""
-pyHesiodFS [mountpath] [options]
-
-"""
-        if sys.argv[1] == '-f':
-            sys.argv.pop(1)
-        server = PyHesiodFS()
+    usage = Fuse.fusage
+    server = PyHesiodFS(version="%prog " + fuse.__version__,
+                        usage=usage,
+                        dash_s_do='setsingle')
+    server.parse(errex=1)
 
     try:
         server.main()
