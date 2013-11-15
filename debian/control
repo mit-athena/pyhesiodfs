@@ -2,14 +2,21 @@ Source: debathena-pyhesiodfs
 Section: debathena/net
 Priority: extra
 Maintainer: Debathena Project <debathena@mit.edu>
-Build-Depends: cdbs, debhelper, config-package-dev, python-dev, python-support
+Build-Depends: cdbs, debhelper, config-package-dev, python-support
 Standards-Version: 3.9.3
 
 Package: debathena-pyhesiodfs
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-fuse, python-hesiod (>= 0.2.10), debathena-afs-config, debathena-hesiod-config, adduser, fuse (>= 2.8.5-2~) | fuse-utils, lsb-base (>= 3.0-6)
-Provides: ${python:Provides}
-Conflicts: debathena-afuse-automounter, debathena-autofs-config
+XB-Python-Version: ${python:Versions}
+Depends: ${misc:Depends},
+ ${python:Depends},
+ python-fuse,
+ fuse (>= 2.8.5-2~) | fuse-utils,
+ adduser,
+ lsb-base (>= 3.0-6),
+ debathena-python-locker-support,
+Provides: ${diverted-files}
+Conflicts: debathena-afuse-automounter, debathena-autofs-config, ${diverted-files}
 Replaces: debathena-afuse-automounter, debathena-autofs-config
 Description: Hesiod automounter for Athena lockers
  This package includes a FUSE filesystem to automatically mount Athena
