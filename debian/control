@@ -2,7 +2,7 @@ Source: debathena-pyhesiodfs
 Section: debathena/net
 Priority: extra
 Maintainer: Debathena Project <debathena@mit.edu>
-Build-Depends: cdbs, debhelper, config-package-dev, python-support
+Build-Depends: cdbs, debhelper, config-package-dev, python-support, python (>= 2.6~)
 Standards-Version: 3.9.3
 
 Package: debathena-pyhesiodfs
@@ -14,7 +14,7 @@ Depends: ${misc:Depends},
  fuse (>= 2.8.5-2~) | fuse-utils,
  adduser,
  lsb-base (>= 3.0-6),
- debathena-python-locker-support,
+ debathena-locker-support,
 Provides: ${diverted-files}
 Conflicts: debathena-afuse-automounter, debathena-autofs-config, ${diverted-files}
 Replaces: debathena-afuse-automounter, debathena-autofs-config
