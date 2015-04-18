@@ -25,8 +25,14 @@ set -e
 
 case "$1" in
     configure)
-        adduser pyhesiodfs fuse
-        
+	# Adding pyhesiodfs only if the local user group fuse exists.
+	# The group fuse no longer exists in jessie.
+	# If the group fuse is needed, it should have been added when the package
+	# fuse, a dependency, was configured, before this script is run.
+	if grep -q "^fuse:" /etc/group; then
+	    adduser pyhesiodfs fuse
+	fi
+
 	if hash invoke-rc.d 2>/dev/null; then
 	    # If /dev/fuse has group root, restart udev to work around
 	    # <https://bugs.launchpad.net/ubuntu/+source/fuse/+bug/293502>

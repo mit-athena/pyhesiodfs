@@ -1,3 +1,11 @@
+debathena-pyhesiodfs (1.1-0debathena3) unstable; urgency=low
+
+  * debian/debathena-pyhesiodfs.postinst: Add user pyhesiodfs to group fuse
+    only if the local group exists. As of Debian Jessie, the group fuse is no
+    longer used. (Trac: #1523)
+
+ -- Lizhou Sha <slz@mit.edu>  Sat, 18 Apr 2015 15:31:05 -0400
+
 debathena-pyhesiodfs (1.1-0debathena2) unstable; urgency=low
 
   * Add git-buildpackage configuration
