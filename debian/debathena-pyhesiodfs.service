@@ -1,0 +1,17 @@
+# Author: Lizhou Sha <slz@mit.edu>
+# This file is part of the debathena-pyhesiodfs package.
+
+[Unit]
+Description=Hesiod automounter for Athena lockers
+After=local-fs.target network.target systemd-tmpfiles-setup.service
+Before=remote-fs.target
+
+[Service]
+Type=simple
+Environment="pyhesiodfs_dir=/mit"
+OOMScoreAdjust=-1000
+User=pyhesiodfs
+ExecStart=/usr/bin/pyhesiodfs -f ${pyhesiodfs_dir} -o nonempty
+
+[Install]
+WantedBy=multi-user.target remote-fs.target

@@ -1,3 +1,11 @@
+debathena-pyhesiodfs (1.1-0debathena4) unstable; urgency=low
+
+  * Add a systemd unit file, translated from the sysvinit script. (Trac: #962)
+  * Add Build-Depends on dh_systemd.
+  * Add a systemd tmpfile to create /mit on demand.
+
+ -- Lizhou Sha <slz@mit.edu>  Sat, 18 Jun 2016 00:46:17 -0400
+
 debathena-pyhesiodfs (1.1-0debathena3) unstable; urgency=low
 
   * debian/debathena-pyhesiodfs.postinst: Add user pyhesiodfs to group fuse
