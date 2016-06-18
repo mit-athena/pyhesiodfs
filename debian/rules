@@ -3,7 +3,7 @@
 DEB_DIVERT_EXTENSION = .debathena
 DEB_DIVERT_FILES_debathena-pyhesiodfs += \
 	/etc/fuse.conf.debathena
-DEB_PYTHON_SYSTEM=pysupport
+DEB_PYTHON2_MODULE_PACKAGES = debathena-pyhesiodfs
 
 ifneq ($(shell grep RESTART_AFTER_UPGRADE /usr/bin/dh_installinit),)
 	DEB_DH_INSTALLINIT_ARGS += --restart-after-upgrade
