@@ -1,6 +1,8 @@
-debathena-pyhesiodfs (1.1-0debathena5) UNRELEASED; urgency=medium
+debathena-pyhesiodfs (1.1-0debathena5) unstable; urgency=medium
 
   * Replace python-support with dh-python.
+  * Pass --home to adduser
+    (maintainer-script-should-not-use-adduser-system-without-home).
 
  -- Anders Kaseorg <andersk@mit.edu>  Sat, 18 Jun 2016 01:54:09 -0400
 

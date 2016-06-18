@@ -17,7 +17,7 @@ set -e
 case "$1" in
     install|upgrade)
 	if ! getent passwd pyhesiodfs >/dev/null; then
-	    adduser --system --no-create-home --group pyhesiodfs
+	    adduser --system --no-create-home --home /nonexistent --group pyhesiodfs
 	fi
 	;;
     
